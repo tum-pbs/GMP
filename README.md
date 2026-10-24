@@ -12,7 +12,7 @@
   <img src="https://img.shields.io/badge/Huggingface-GMP-FFD21E?logo=huggingface" alt="Pretrained weights on Hugging Face"/>
 </a>
 <a href="LICENSE">
-  <img src="https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg" alt="License: CC BY-NC 4.0"/>
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License: Apache 2.0"/>
 </a>
 </p>
 
@@ -37,7 +37,7 @@ GMP addresses the core bottlenecks of data generation, storage, and transferabil
    - **Steady-state regime (Geometry-driven):** GMP employs intrinsic shape descriptors (coordinates, curvatures, normals, and SGD) to learn rich representations of complex 3D domains without running expensive offline simulations.
    - **Transient regime (Physics-driven):** GMP uses GPU-accelerated solvers to generate synthetic PDE dynamics online, enabling scalable pre-training for time-dependent evolutions without storage overhead.
 
-3. **Data-Efficient Downstream Transfer:** Models pre-trained with GMP achieve faster convergence, greater data efficiency, and higher accuracy during fine-tuning—delivering higher performance gains under realistic, low-data regimes.
+3. **Data-Efficient Downstream Transfer:** Models pre-trained with GMP achieve faster convergence, greater data efficiency, and higher accuracy during fine-tuning, delivering higher performance gains under realistic, low-data regimes.
 
 4. **Architecture Versatility (Designed for GMP-Net, Proven on Baselines):** The pre-training framework is specifically designed for **GMP-Net** (our proposed architecture derived from [**SMART**](https://arxiv.org/abs/2601.18707) [Hagnberger & Niepert, ICML 2026], featuring a multi-branch geometry-physics formulation with cross-modal latent attention). Beyond GMP-Net, we also demonstrate that GMP pre-training generalizes effectively to other popular unstructured architectures, including **Transolver++** and **AB-UPT**.
 
@@ -72,9 +72,9 @@ GMP addresses the core bottlenecks of data generation, storage, and transferabil
 @inproceedings{medrano2026geometry,
   title={Geometry Meets Physics: Data-Efficient Pre-Training for Unstructured Neural PDE Solvers},
   author={Medrano-Navarro, Luis and Baldan, Giacomo and Liu, Qiang and Holzschuh, Benjamin and Hagnberger, Jan and Niepert, Mathias and Thuerey, Nils},
-  booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
+  booktitle={The Fortieth Annual Conference on Neural Information Processing Systems},
   year={2026},
-  note={arXiv:2610.03363}
+  url={https://openreview.net/forum?id=jidnQA2TIz}
 }
 ```
 
@@ -96,8 +96,8 @@ GMP is evaluated across six diverse downstream engineering benchmarks on unstruc
 
 | Benchmark | Physical Domain | Mesh Type | Rollout Horizon | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| **Kuramoto–Sivashinsky (KS)** | Chaotic Nonlinear Dynamics | 2D Deformed Grid | 199 steps | 2D chaotic spatiotemporal dynamics interpolated onto irregular grids. Tests cross-dimensional generalization (3D $\to$ 2D via zero-padding) and autoregressive stability. |
-| **Flow Around Ellipse** | Fluid Mechanics (Unsteady CFD) | 2D Unstructured Mesh | 100 steps | Incompressible 2D flow past an elliptical obstacle (from DGN) exhibiting laminar vortex shedding, predicting evolving velocity and pressure fields. |
+| **Kuramoto–Sivashinsky (KS)** | Chaotic Nonlinear Dynamics | 2D Deformed Grid | 30 steps | 2D chaotic spatiotemporal dynamics interpolated onto irregular grids. Tests cross-dimensional generalization (3D $\to$ 2D via zero-padding) and autoregressive stability. |
+| **Flow Around Ellipse** | Fluid Mechanics (Unsteady CFD) | 2D Unstructured Mesh | 100 steps | Incompressible 2D flow past an elliptical obstacle, predicting evolving velocity and pressure fields. |
 | **SHIFT-Crash** | Dynamic Impact Mechanics | 3D Surface | 12 steps | Autoregressive temporal rollout across 12 discrete time steps capturing high-rate nonlinear deformation dynamics and stress distribution during vehicle collision. |
 
 ---
@@ -121,15 +121,15 @@ pip install -r requirements.txt
 
 ### 2. Pre-Trained Model Weights
 
-Pre-trained model weights for GMPNet and baselines are hosted on Hugging Face:
+Pre-trained model weights for GMP-Net and baselines are hosted on Hugging Face:
 - 🔗 **[Hugging Face – Thuerey Group GMP Repository](https://huggingface.co/thuerey-group)**
 
 Download the pre-trained checkpoints and place them in the corresponding `outputs_pretraining/` subfolders:
 
 | Model / Regime | Pre-Training Stage | Destination Checkpoint Path |
 | :--- | :--- | :--- |
-| **GMPNet** | Geometry Pre-Training (Steady) | `outputs_pretraining/gmpnet/epoch-200.pth` |
-| **GMPNet** | Physics Pre-Training (Transient) | `outputs_pretraining/gmpnet_physics/epoch-199-EMA.ckpt` |
+| **GMP-Net** | Geometry Pre-Training (Steady) | `outputs_pretraining/gmpnet/epoch-200.pth` |
+| **GMP-Net** | Physics Pre-Training (Transient) | `outputs_pretraining/gmpnet_physics/epoch-199-EMA.ckpt` |
 | **AB-UPT** | Geometry Pre-Training | `outputs_pretraining/abupt/epoch-200.pth` |
 | **Transolver++** | Geometry Pre-Training (Surface) | `outputs_pretraining/transolver_pp_surface/epoch-200.pth` |
 | **Transolver++** | Geometry Pre-Training (Volume) | `outputs_pretraining/transolver_pp_volume/epoch-200.pth` |
@@ -194,12 +194,13 @@ Weights & Biases (`wandb`) is integrated for tracking experiments:
 │   ├── callbacks/                 # Callback configs (finetuning freeze schedule, metrics)
 │   ├── data/                      # Dataset configs (drivaerml, crasht, ks)
 │   ├── model/                     # Model architecture and checkpoint mapping configs
-│   └── trainer/                   # PyTorch Lightning trainer defaults
+│   ├── trainer/                   # PyTorch Lightning trainer defaults
+│   └── wandb/                     # Weights & Biases experiment tracking configs
 ├── outputs_pretraining/           # Pre-trained model checkpoints (download from Hugging Face)
 ├── src/
 │   ├── callbacks/                 # FineTuneCallback, ModelStats, CarMetrics
 │   ├── models/
-│   │   ├── gmpnet/                # GMPNet architecture and wrappers
+│   │   ├── gmpnet/                # GMP-Net architecture and wrappers
 │   │   ├── baselines/             # Transolver++, AB-UPT, and SMART baselines
 │   │   └── fft/                   # Full fine-tuning (FFT) weight-loading wrappers
 │   └── train.py                   # Downstream training entry point
@@ -216,4 +217,4 @@ This project is part of research in physics-based deep learning at the [**Physic
 
 ## License
 
-This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International](LICENSE) (CC BY-NC 4.0) License. You are free to share and adapt the material for non-commercial purposes, provided appropriate credit is given. Commercial use requires prior written consent from the authors.
+This project is licensed under the [Apache 2.0 License](LICENSE).
