@@ -1,0 +1,9 @@
+scheduler:
+  _target_: torch.optim.lr_scheduler.StepLR
+  _partial_: true
+  step_size: ${max_epochs} * 0.1
+  gamma: 0.8     
+interval: epoch
+frequency: 1
+strict: True
+name: learning_rate

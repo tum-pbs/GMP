@@ -1,0 +1,8 @@
+callbacks:
+  model_stats:
+    _target_: src.callbacks.ModelStatsCallback
+    input_size: [ 1, 1, 28, 28 ]
+    device: null                # leave null to use module device
+    warmup_steps: 1
+    batch_size: ${batch_size_per_gpu}
+    throughput_steps: 10        # iterations for timing

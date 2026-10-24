@@ -1,0 +1,164 @@
+_target_: src.data.unstructured.UnstructuredDataModule
+
+train_dataset:
+  _target_: src.data.loader.datasets.DrivAerMLSVDataset
+  use_volume: ${use_volume}
+  use_surface: ${use_surface}
+  volume_file_path: ${env.data_dir}/drivaer_data/run_{i}/volume_{i}_filtered.h5
+  surface_file_path: ${env.data_dir}/drivaer_data/run_{i}/boundary_{i}.h5
+  global_parameter_path: ${env.data_dir}/drivaer_data/geo_parameters_all.csv
+  global_parameter_names: [Vehicle_Length,Vehicle_Width,Vehicle_Height,Front_Overhang,Front_Planview,Hood_Angle,Approach_Angle,Windscreen_Angle,Greenhouse_Tapering,Backlight_Angle,Decklid_Height,Rearend_tapering,Rear_Overhang,Rear_Diffusor_Angle,Vehicle_Ride_Height,Vehicle_Pitch]
+  global_parameter_min: [-150,-100,-100,-150,-75,-50,-40,-150,-100,-100,-50,-90,-150,-50,-50,-1]
+  global_parameter_max: [250,100,100,100,75,50,30,150,100,200,50,70,100,50,50,1]
+  sim_indexes: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
+  min_domain: [-2.0, -1.5, -0.33]
+  max_domain: [8.0, 1.5, 2.0]
+  # surface attributes / values
+  attrs_surface:
+    - name: normals
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+    - name: areas
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0]
+  values_surface:
+    - name: pMeanTrim
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-230.0549, 269.3521]
+    - name: wallShearStressMeanTrim_x
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-1.2001, 2.0758]
+    - name: wallShearStressMeanTrim_y
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [0.0016, 1.3566]
+    - name: wallShearStressMeanTrim_z
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-0.0718, 1.1154]
+  # volume values (no attrs assumed)
+  values_volume:
+    - name: pMeanTrim
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-123.1228, 246.5030]
+    - name: UMeanTrim
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [7.6584, 15.8734, -0.0385, 7.9440, 0.4053, 5.9558]
+  max_num_surface_points: ${max_num_surface_points}
+  max_num_volume_points: ${max_num_volume_points}
+  use_cache: false
+
+validation_dataset:
+  _target_: src.data.loader.datasets.DrivAerMLSVDataset
+  use_volume: ${use_volume}
+  use_surface: ${use_surface}
+  volume_file_path: ${env.data_dir}/drivaer_data/run_{i}/volume_{i}_filtered.h5
+  surface_file_path: ${env.data_dir}/drivaer_data/run_{i}/boundary_{i}.h5
+  global_parameter_path: ${env.data_dir}/drivaer_data/geo_parameters_all.csv
+  global_parameter_names: [Vehicle_Length,Vehicle_Width,Vehicle_Height,Front_Overhang,Front_Planview,Hood_Angle,Approach_Angle,Windscreen_Angle,Greenhouse_Tapering,Backlight_Angle,Decklid_Height,Rearend_tapering,Rear_Overhang,Rear_Diffusor_Angle,Vehicle_Ride_Height,Vehicle_Pitch]
+  global_parameter_min: [-150,-100,-100,-150,-75,-50,-40,-150,-100,-100,-50,-90,-150,-50,-50,-1]
+  global_parameter_max: [250,100,100,100,75,50,30,150,100,200,50,70,100,50,50,1]
+  sim_indexes: [106,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,127,128,129,130,131,132]
+  min_domain: [-2.0, -1.5, -0.33]
+  max_domain: [8.0, 1.5, 2.0]
+  attrs_surface:
+    - name: normals
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+    - name: areas
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0]
+  values_surface:
+    - name: pMeanTrim
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-230.0549, 269.3521]
+    - name: wallShearStressMeanTrim_x
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-1.2001, 2.0758]
+    - name: wallShearStressMeanTrim_y
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [0.0016, 1.3566]
+    - name: wallShearStressMeanTrim_z
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-0.0718, 1.1154]
+  # volume values (no attrs assumed)
+  values_volume:
+    - name: pMeanTrim
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-123.1228, 246.5030]
+    - name: UMeanTrim
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [7.6584, 15.8734, -0.0385, 7.9440, 0.4053, 5.9558]
+  max_num_surface_points: ${max_num_surface_points}
+  max_num_volume_points: ${max_num_volume_points}
+  use_cache: false
+
+test_dataset:
+  _target_: src.data.loader.datasets.DrivAerMLSVDataset
+  use_volume: ${use_volume}
+  use_surface: ${use_surface}
+  volume_file_path: ${env.data_dir}/drivaer_data/run_{i}/volume_{i}_filtered.h5
+  surface_file_path: ${env.data_dir}/drivaer_data/run_{i}/boundary_{i}.h5
+  global_parameter_path: ${env.data_dir}/drivaer_data/geo_parameters_all.csv
+  global_parameter_names: [Vehicle_Length,Vehicle_Width,Vehicle_Height,Front_Overhang,Front_Planview,Hood_Angle,Approach_Angle,Windscreen_Angle,Greenhouse_Tapering,Backlight_Angle,Decklid_Height,Rearend_tapering,Rear_Overhang,Rear_Diffusor_Angle,Vehicle_Ride_Height,Vehicle_Pitch]
+  global_parameter_min: [-150,-100,-100,-150,-75,-50,-40,-150,-100,-100,-50,-90,-150,-50,-50,-1]
+  global_parameter_max: [250,100,100,100,75,50,30,150,100,200,50,70,100,50,50,1]
+  sim_indexes: [106,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,127,128,129,130,131,132]
+  min_domain: [-2.0, -1.5, -0.33]
+  max_domain: [8.0, 1.5, 2.0]
+  attrs_surface:
+    - name: normals
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+    - name: areas
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0]
+  values_surface:
+    - name: pMeanTrim
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-230.0549, 269.3521]
+    - name: wallShearStressMeanTrim_x
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-1.2001, 2.0758]
+    - name: wallShearStressMeanTrim_y
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [0.0016, 1.3566]
+    - name: wallShearStressMeanTrim_z
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-0.0718, 1.1154]
+  # volume values (no attrs assumed)
+  values_volume:
+    - name: pMeanTrim
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [-123.1228, 246.5030]
+    - name: UMeanTrim
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [7.6584, 15.8734, -0.0385, 7.9440, 0.4053, 5.9558]
+  max_num_surface_points: ${max_num_surface_points}
+  max_num_volume_points: ${max_num_volume_points}
+  use_cache: false
+
+batch_size: ${batch_size_per_gpu}
+num_workers: 4

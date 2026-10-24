@@ -1,0 +1,26 @@
+_target_: lightning.pytorch.Trainer
+max_epochs: ${max_epochs}
+accelerator: auto
+devices: ${env.devices}
+strategy: ddp_find_unused_parameters_true
+precision: 32
+gradient_clip_val: ${gradient_clip_val}
+gradient_clip_algorithm: "norm"
+log_every_n_steps: 10
+default_root_dir: ${log_dir}/${name}
+accumulate_grad_batches: ${gradient_accumulation_steps}
+enable_checkpointing: true
+callbacks: ${eval:'list(${callbacks.callbacks}.values())'}
+logger:
+  - _target_: lightning.pytorch.loggers.WandbLogger
+    project: ${wandb.project}
+    entity: ${wandb.entity}
+    name: ${name}
+    id: ${run_id}
+    resume: "allow"
+    tags: ${wandb.setup.tags}
+    group: ${wandb.setup.group}
+    job_type: ${wandb.setup.job_type}
+    save_dir: ${trainer.default_root_dir}
+    log_model: false
+

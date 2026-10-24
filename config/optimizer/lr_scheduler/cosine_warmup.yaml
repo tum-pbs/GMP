@@ -1,0 +1,10 @@
+scheduler:
+  _target_: src.utils.schedulers.CosineWarmupLR
+  _partial_: true
+  warmup_epochs: ${warmup_epochs}
+  max_epochs: ${max_epochs}
+  min_lr_factor: 0.01
+interval: step
+frequency: 1
+strict: True
+name: learning_rate

@@ -1,0 +1,15 @@
+_target_: src.models.baselines.abupt.abupt_wrapper.ABUPTWrapper
+
+ndim: 3
+input_dim: 3
+output_dim_surface: 4
+output_dim_volume: 4
+dim: 192
+geometry_depth: 3
+num_heads: 8
+blocks: "pscscs"
+num_volume_blocks: 8
+num_surface_blocks: 8
+radius: 0.25
+supernode_fraction: 0.125
+num_anchors: 8192

@@ -1,0 +1,3 @@
+defaults:
+  - optimizer: lion
+  - lr_scheduler: cosine_warmup

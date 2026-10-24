@@ -1,0 +1,24 @@
+_target_: src.models.fft.GMPNetAutoregFFTWrapper
+spatial_dim: ${dim}
+concat_pos_to_physics: true  
+surface_channels_input: 0
+volume_channels_input: 3
+surface_channels: 0
+volume_channels: 3
+parameter_channels: 1
+latent_dim: 256
+latent_geometry_points: 1024
+subsampled_geometry_points: 1024
+num_encoder_decoder_blocks: 8
+num_heads: 8
+pos_scale_factor: 1000
+dropout: 0.0
+use_latent_coattention: false
+
+# Pretrained weight configuration: geometry branch (gs) from geometry pretraining, rest from physics pretraining
+path_pretrained_encoder_weights: "outputs_pretraining/gmpnet/epoch-200.pth"
+path_pretrained_decoder_weights: "outputs_pretraining/gmpnet_physics/epoch-199-EMA.ckpt"
+exclude_prefixes: []
+module_encoder_prefixes: ["encoder_blocks_gs", "decoder_blocks_gs"]
+module_decoder_prefixes: ["pos_encoder", "physics_mlp_surface", "physics_mlp_volume", "encoder_blocks_ps", "decoder_blocks_ps", "encoder_blocks_pv", "decoder_blocks_pv", "mlp_final", "mlp_gate"]
+

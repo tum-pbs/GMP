@@ -1,0 +1,5 @@
+callbacks:
+  finetuning:
+    _target_: src.callbacks.epoch_ft.FineTuneCallback
+    unfreeze_at_epoch: 10
+    unfreeze_modules: ["model.preprocess.linear_pre.0", "model.blocks.7.mlp2"] # Transolver++

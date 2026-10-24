@@ -1,0 +1,52 @@
+_target_: src.data.unstructured.UnstructuredDataModule
+train_dataset:
+  _target_: src.data.loader.datasets.CrashSteady
+  file_path: ${env.data_dir}/shift_crash/yaris_x{i:05d}/merged_surfaces.h5
+  sim_indexes: [5102, 5158, 3737, 4599, 3660, 4885, 5290, 4312, 2977, 1932, 1928, 325, 773, 4654, 5020, 6117, 5146, 4905, 1776, 405, 4865, 3916, 2234, 4064, 323, 3330, 3231, 4862, 477, 338, 963, 771, 5726, 3191, 2492, 1029, 938, 2569, 2929, 3608, 2998, 5149, 632, 2679, 2088, 2548, 5218, 5498, 3928, 1425, 1570, 3652, 2846, 4010, 2287, 4858, 3329, 2567, 1360, 2624, 6030, 4240, 5492, 4341]
+  min_domain: [-4260.0, -900.0, 0.0]
+  max_domain: [240.0, 900.0, 1570.0]
+  # fields: [displacement, thickness, stress_vm, effective_plastic_strain, specific_energy, stress_upper, stress_lower]
+  # min: [-82.0, -81.0, -81.0, 0.0, 0.0, 0.0, -59267846144.0, -172.0, -146.0, -199.0, -494.0, -346.0, -441.0]
+  # max: [630.0, 630.0, 634.0, 214.0, 6792.0, 407.0, 34548699749154816.0, 525.0, 323.0, 439.0, 141.0, 142.0, 194.0]
+  fields: [displacement, stress_vm]
+  min: [0.0, -240.0, -300.0, 0.0]
+  max: [700.0, 190.0, 350.0, 1200.0]
+  time_steps: 1
+  target_step: -1
+  max_num_points: ${max_num_surface_points}
+  globals: [front_rails, cabin_length, car_width, roof_height, rail_thickness, rail_yield_strength]
+  global_parameter_min: [-40.0, -40.0, -40.0, -40.0, 1.2, 250.0]
+  global_parameter_max: [100.0, 100.0, 40.0, 100.0, 2.5, 400.0]
+validation_dataset:
+  _target_: src.data.loader.datasets.CrashSteady
+  file_path: ${env.data_dir}/shift_crash/yaris_x{i:05d}/merged_surfaces.h5
+  sim_indexes: [202, 944, 1384, 1445, 1617, 1944, 2040, 2134, 2462, 2602, 3208, 3262, 3270, 3363, 3365, 3438, 3563, 3710, 3898, 3915, 4072, 4138, 4307, 4661, 4704, 4710, 5006, 5278, 5375, 5636, 5757, 5758]
+  min_domain: [-4260.0, -900.0, 0.0]
+  max_domain: [240.0, 900.0, 1570.0]
+  fields: [displacement, stress_vm]
+  min: [0.0, -240.0, -300.0, 0.0]
+  max: [700.0, 190.0, 350.0, 1200.0]
+  time_steps: 1
+  target_step: -1
+  max_num_points: ${max_num_surface_points}
+  globals: [front_rails, cabin_length, car_width, roof_height, rail_thickness, rail_yield_strength]
+  global_parameter_min: [-40.0, -40.0, -40.0, -40.0, 1.2, 250.0]
+  global_parameter_max: [100.0, 100.0, 40.0, 100.0, 2.5, 400.0]
+test_dataset:
+  _target_: src.data.loader.datasets.CrashSteady
+  file_path: ${env.data_dir}/shift_crash/yaris_x{i:05d}/merged_surfaces.h5
+  sim_indexes: [202, 944, 1384, 1445, 1617, 1944, 2040, 2134, 2462, 2602, 3208, 3262, 3270, 3363, 3365, 3438, 3563, 3710, 3898, 3915, 4072, 4138, 4307, 4661, 4704, 4710, 5006, 5278, 5375, 5636, 5757, 5758]
+  min_domain: [-4260.0, -900.0, 0.0]
+  max_domain: [240.0, 900.0, 1570.0]
+  fields: [displacement, stress_vm]
+  min: [0.0, -240.0, -300.0, 0.0]
+  max: [700.0, 190.0, 350.0, 1200.0]
+  time_steps: 1
+  target_step: -1
+  max_num_points: ${max_num_surface_points}
+  globals: [front_rails, cabin_length, car_width, roof_height, rail_thickness, rail_yield_strength]
+  global_parameter_min: [-40.0, -40.0, -40.0, -40.0, 1.2, 250.0]
+  global_parameter_max: [100.0, 100.0, 40.0, 100.0, 2.5, 400.0]
+
+batch_size: ${batch_size_per_gpu}
+num_workers: 4

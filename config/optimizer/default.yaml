@@ -1,0 +1,3 @@
+defaults:
+  - optimizer: adam_w
+  - lr_scheduler: cosine_warmup

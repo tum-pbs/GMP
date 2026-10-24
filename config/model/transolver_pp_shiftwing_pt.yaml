@@ -1,0 +1,21 @@
+_target_: src.models.fft.TransolverFFTWrapper
+
+space_dim: 3
+n_layers: 6
+n_hidden: 512
+dropout: 0.0
+n_head: 16
+act: gelu
+mlp_ratio: 1.0
+fun_dim: 3
+out_dim: 4
+slice_num: 64
+ref: 8
+unified_pos: false
+condition_size: 3
+
+# Pretrained geometry weights
+path_pretrained_weights: "outputs_pretraining/transolver_pp_surface/epoch-200.pth"
+exclude_prefixes: []
+module_encoder_prefixes: ["preprocess", "placeholder", "embedding", "blocks"]
+module_decoder_prefixes: []

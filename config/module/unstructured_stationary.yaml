@@ -1,0 +1,3 @@
+_target_: src.modules.UnstructuredTransformerStationary
+model: ${model}
+optimizer: ${optimizer}

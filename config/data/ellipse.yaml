@@ -1,0 +1,43 @@
+_target_: src.data.unstructured.UnstructuredDataModule
+train_dataset:
+  _target_: src.data.loader.EllipseDataset
+  file_path: ${env.data_dir}/uPDEt/ellipse_test.hdf5
+  sim_indexes: ${eval:'sorted(__import__("random").Random(42).sample(range(1200), 1200)[:1000])'}
+  min_domain: [0.0, 0.0]
+  max_domain: [8.5, 6.0]
+  global_parameter_min: [932]
+  global_parameter_max: [1000]
+  mean: [ 9.9085790e-01,  -6.7314866e-04,  -4.2656120e-02]
+  std: [0.27121767,  0.20049557,  0.17777333]
+  time_steps: 1
+  max_num_points: 1024
+  start: 4500
+validation_dataset:
+  _target_: src.data.loader.EllipseDataset
+  file_path: ${env.data_dir}/uPDEt/ellipse_test.hdf5
+  sim_indexes: ${eval:'sorted(__import__("random").Random(42).sample(range(1200), 1200)[1000:])'}
+  min_domain: [0.0, 0.0]
+  max_domain: [8.5, 6.0]
+  global_parameter_min: [932]
+  global_parameter_max: [1000]
+  mean: [ 9.9085790e-01,  -6.7314866e-04,  -4.2656120e-02]
+  std: [0.27121767,  0.20049557,  0.17777333]
+  time_steps: 100
+  max_num_points: 1024
+  start: 4500
+test_dataset:
+  _target_: src.data.loader.EllipseDataset
+  file_path: ${env.data_dir}/uPDEt/ellipse_test.hdf5
+  sim_indexes: ${eval:'sorted(__import__("random").Random(42).sample(range(1200), 1200)[1000:])'}
+  min_domain: [0.0, 0.0]
+  max_domain: [8.5, 6.0]
+  global_parameter_min: [932]
+  global_parameter_max: [1000]
+  mean: [ 9.9085790e-01,  -6.7314866e-04,  -4.2656120e-02]
+  std: [0.27121767,  0.20049557,  0.17777333]
+  time_steps: 100
+  max_num_points: 1024
+  start: 4500
+
+batch_size: ${batch_size_per_gpu}
+num_workers: 4

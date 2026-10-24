@@ -1,0 +1,9 @@
+callbacks:
+  visualization:
+    _target_: src.callbacks.UnstructuredRollout3DVisualization
+    frequency: 1
+    max_visualizations: 4
+    rollout_num: 13
+    steps_plot: 2
+    test_only: True
+    disabled: False

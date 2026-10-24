@@ -1,0 +1,4 @@
+_target_: src.modules.UnstructuredTransformerAutoregressive
+model: ${model}
+optimizer: ${optimizer}
+spatial_dim: ${dim}

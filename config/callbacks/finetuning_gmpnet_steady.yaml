@@ -1,0 +1,5 @@
+callbacks:
+  finetuning:
+    _target_: src.callbacks.epoch_ft.FineTuneCallback
+    unfreeze_at_epoch: 10
+    unfreeze_modules: ["model.mlp_final", "model.mlp_gate", "modulator"] # GMPNet steady-state

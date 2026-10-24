@@ -1,0 +1,31 @@
+_target_: src.data.unstructured.UnstructuredDataModule
+train_dataset:
+  _target_: src.data.loader.KSDataset
+  file_path: ${env.data_dir}/uPDEt/ks_unstructured/ks_64_100_6080_gaussian_0.5_1.0.hdf5
+  sim_indexes: null
+  min_domain: [0.0, 0.0]
+  max_domain: [1.0, 1.0]
+  mean: 0.0
+  std: 4.0
+  time_steps: 1
+validation_dataset:
+  _target_: src.data.loader.KSDataset
+  file_path: ${env.data_dir}/uPDEt/ks_unstructured_test/ks_64_100_6080_gaussian_1.4.hdf5
+  sim_indexes: null
+  min_domain: [0.0, 0.0]
+  max_domain: [1.0, 1.0]
+  mean: 0.0
+  std: 4.0
+  time_steps: 199
+test_dataset:
+  _target_: src.data.loader.KSDataset
+  file_path: ${env.data_dir}/uPDEt/ks_unstructured_test/ks_64_100_6080_gaussian_1.4.hdf5
+  sim_indexes: null
+  min_domain: [0.0, 0.0]
+  max_domain: [1.0, 1.0]
+  mean: 0.0
+  std: 4.0
+  time_steps: 199
+
+batch_size: ${batch_size_per_gpu}
+num_workers: 4

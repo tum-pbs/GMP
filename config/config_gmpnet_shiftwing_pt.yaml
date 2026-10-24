@@ -1,0 +1,53 @@
+defaults:
+  - data: shiftwing_64
+  - model: gmpnet_shiftwing_pt
+  - module: unstructured_stationary
+  - trainer: default
+  - callbacks: [default, unstructured_scatter_3d_vis, model_stats, finetuning_gmpnet_steady]
+  - optimizer: lion
+  - wandb: shiftwing
+  - hydra: default
+  - env: servus06
+  - _self_
+
+
+#### Name of run and seed ####  
+
+seed: 0
+name: gmpnet_shiftwing_pt
+run_id: null
+
+#### Output directory ####
+log_dir: outputs/
+
+#### Batch size computation ####
+
+batch_size: 1
+max_batch_size_per_gpu: 1
+
+nodes: ${env.nodes}
+devices: ${env.devices}
+effective_batch_size_per_gpu: ${eval:'int(${batch_size}/(${nodes}*${devices}))'}
+batch_size_per_gpu: ${eval:'min(${max_batch_size_per_gpu}, ${effective_batch_size_per_gpu})'}
+gradient_accumulation_steps: ${eval:'int(${effective_batch_size_per_gpu} / ${batch_size_per_gpu})'}
+
+#### Learning rate, warmup, weight decay, and epochs ####
+
+learning_rate: 1e-4
+max_epochs: 200
+warmup_epochs: 10
+weight_decay: 1e-2
+gradient_clip_val: 1.0
+
+
+#### EMA settings ####
+
+use_ema_for_test: true
+
+
+#### Experiment settings #### 
+use_surface: true
+use_volume: true
+max_num_surface_points: 32768
+max_num_volume_points: 32768
+dim: 3

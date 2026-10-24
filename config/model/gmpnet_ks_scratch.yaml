@@ -1,0 +1,16 @@
+_target_: src.models.gmpnet.gmpnet_wrapper_autoreg.GMPNetWrapper
+spatial_dim: ${dim}
+concat_pos_to_physics: true  
+surface_channels_input: 0
+volume_channels_input: 1
+surface_channels: 0
+volume_channels: 1
+parameter_channels: 1
+latent_dim: 256
+latent_geometry_points: 4096
+subsampled_geometry_points: 4096
+num_encoder_decoder_blocks: 8
+num_heads: 8
+pos_scale_factor: 1000
+dropout: 0.0
+use_latent_coattention: false # options: true | false 

@@ -1,0 +1,127 @@
+_target_: src.data.unstructured.UnstructuredDataModule
+
+train_dataset:
+  _target_: src.data.loader.datasets.ShiftWingSVDataset
+  use_volume: ${use_volume}
+  use_surface: ${use_surface}
+  volume_file_path: ${env.data_dir}/Wing/OnShape_luminary_crm_version001/sample_{i}/volume.h5
+  surface_file_path: ${env.data_dir}/Wing/OnShape_luminary_crm_version001/sample_{i}/surface.h5
+  global_parameter_names: [reynolds_number, mach, alpha]
+  global_parameter_min: [25225782.296616275, 0.5, 0.0]
+  global_parameter_max: [62443263.65934555, 0.85, 4.0]
+  sim_indexes: ${eval:'list(range(1,17))'}
+  min_domain: [-50, -50, -25]
+  max_domain: [150, 50, 25]
+  # surface attributes / values
+  attrs_surface:
+    - name: normals
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+  values_surface:
+    - name: pressure
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [22966.574, 2604.6064]
+    - name: wss
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [1.6353785e+01, 9.360612, 3.0114577e-05, 3.691476, 9.4251567e-01, 5.6485868]
+  # volume values (no attrs assumed)
+  values_volume:
+    - name: pressure
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [23033.406, 2695.7903]
+    - name: velocity
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [7.3982895e+01, 64.41165, -6.8045087e-04, 16.105837,  3.6368439e+00, 20.588528]
+  max_num_surface_points: ${max_num_surface_points}
+  max_num_volume_points: ${max_num_volume_points}
+  use_cache: false
+
+validation_dataset:
+  _target_: src.data.loader.datasets.ShiftWingSVDataset
+  use_volume: ${use_volume}
+  use_surface: ${use_surface}
+  volume_file_path: ${env.data_dir}/Wing/OnShape_luminary_crm_version001/sample_{i}/volume.h5
+  surface_file_path: ${env.data_dir}/Wing/OnShape_luminary_crm_version001/sample_{i}/surface.h5
+  global_parameter_names: [reynolds_number, mach, alpha]
+  global_parameter_min: [25225782.296616275, 0.5, 0.0]
+  global_parameter_max: [62443263.65934555, 0.85, 4.0]
+  sim_indexes: ${eval:'list(range(135,151))'}
+  min_domain: [-50, -50, -25]
+  max_domain: [150, 50, 25]
+  # surface attributes / values
+  attrs_surface:
+    - name: normals
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+  values_surface:
+    - name: pressure
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [22966.574, 2604.6064]
+    - name: wss
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [1.6353785e+01, 9.360612, 3.0114577e-05, 3.691476, 9.4251567e-01, 5.6485868]
+  # volume values (no attrs assumed)
+  values_volume:
+    - name: pressure
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [23033.406, 2695.7903]
+    - name: velocity
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [7.3982895e+01, 64.41165, -6.8045087e-04, 16.105837,  3.6368439e+00, 20.588528]
+  max_num_surface_points: ${max_num_surface_points}
+  max_num_volume_points: ${max_num_volume_points}
+  use_cache: false
+
+test_dataset:
+  _target_: src.data.loader.datasets.ShiftWingSVDataset
+  use_volume: ${use_volume}
+  use_surface: ${use_surface}
+  volume_file_path: ${env.data_dir}/Wing/OnShape_luminary_crm_version001/sample_{i}/volume.h5
+  surface_file_path: ${env.data_dir}/Wing/OnShape_luminary_crm_version001/sample_{i}/surface.h5
+  global_parameter_names: [reynolds_number, mach, alpha]
+  global_parameter_min: [25225782.296616275, 0.5, 0.0]
+  global_parameter_max: [62443263.65934555, 0.85, 4.0]
+  sim_indexes: ${eval:'list(range(135,151))'}
+  min_domain: [-50, -50, -25]
+  max_domain: [150, 50, 25]
+  # surface attributes / values
+  attrs_surface:
+    - name: normals
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [0.0, 1.0, 0.0, 1.0, 0.0, 1.0]
+  values_surface:
+    - name: pressure
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [22966.574, 2604.6064]
+    - name: wss
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [1.6353785e+01, 9.360612, 3.0114577e-05, 3.691476, 9.4251567e-01, 5.6485868]
+  # volume values (no attrs assumed)
+  values_volume:
+    - name: pressure
+      channels: 1
+      norm_mode: meanstd
+      norm_params: [23033.406, 2695.7903]
+    - name: velocity
+      channels: 3
+      norm_mode: meanstd
+      norm_params: [7.3982895e+01, 64.41165, -6.8045087e-04, 16.105837,  3.6368439e+00, 20.588528]
+  max_num_surface_points: ${max_num_surface_points}
+  max_num_volume_points: ${max_num_volume_points}
+  use_cache: false
+
+batch_size: ${batch_size_per_gpu}
+num_workers: 4

@@ -1,0 +1,21 @@
+_target_: src.models.fft.AbuptFFTWrapper
+
+ndim: 3
+input_dim: 3
+output_dim_surface: 4
+output_dim_volume: 0
+dim: 192
+geometry_depth: 3
+num_heads: 8
+blocks: "pscscs"
+num_volume_blocks: 0
+num_surface_blocks: 8
+radius: 0.25
+supernode_fraction: 0.125
+num_anchors: 8192
+
+# Pretrained geometry weights
+path_pretrained_encoder_weights: "outputs_pretraining/abupt/epoch-200.pth"
+exclude_prefixes: []
+module_encoder_prefixes: ["encoder", "geometry_blocks", "pos_embed", "surface_bias", "volume_bias", "blocks", "rope", "surface_blocks", "volume_blocks"]
+module_decoder_prefixes: ["surface_decoder", "volume_decoder"]

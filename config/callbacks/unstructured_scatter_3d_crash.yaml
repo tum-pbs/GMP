@@ -1,0 +1,8 @@
+callbacks:
+  visualization:
+    _target_: src.callbacks.Scatter3DCrash
+    frequency: 1
+    max_visualizations: 4
+    test_only: True
+    plot_surface: ${use_surface}
+    plot_volume: ${use_volume}
