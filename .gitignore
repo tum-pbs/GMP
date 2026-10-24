@@ -58,7 +58,9 @@ logs/
 *.out
 out_*
 err_*
-wandb/
+/wandb/
+!config/wandb/
+!config/wandb/**
 
 # ==============================================================================
 # Experiment Outputs & Checkpoints

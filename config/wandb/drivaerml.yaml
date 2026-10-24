@@ -1,0 +1,10 @@
+project: upde_drivaerml
+entity: null
+setup:
+    mode: online
+    tags: []    
+    group: null
+    job_type: train 
+watch:
+    log: all
+    log_freq: 100
