@@ -92,3 +92,4 @@ outputs/**
 # Specific Ignored Files
 # ==============================================================================
 src/models/gmpnet/gmpnet_extended.py
+README_HF.md

@@ -8,7 +8,7 @@
 <a href="https://arxiv.org/abs/2610.03363">
   <img src="https://img.shields.io/badge/arXiv-2610.03363-b31b1b?logo=arxiv" alt="Read on arXiv"/>
 </a>
-<a href="https://huggingface.co/thuerey-group">
+<a href="https://huggingface.co/thuerey-group/GMP">
   <img src="https://img.shields.io/badge/Huggingface-GMP-FFD21E?logo=huggingface" alt="Pretrained weights on Hugging Face"/>
 </a>
 <a href="LICENSE">
