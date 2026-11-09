@@ -1,6 +1,7 @@
 from ..dataclasses import DataSample, LoadingMetadata, PhysicalMetadata, asdict_shallow
 
 import h5py
+import multiprocessing as mp
 import os
 import torch
 import numpy as np
@@ -47,7 +48,7 @@ class EllipseDataset(torch.utils.data.Dataset):
         self.time_steps = time_steps
         self.start = start
         self.max_num_points = max_num_points
-        self.epoch = 0
+        self.epoch = mp.Value("i", 0, lock=False)
 
         f = h5py.File(file_path, "r")
         f = f["sims"]
@@ -89,7 +90,8 @@ class EllipseDataset(torch.utils.data.Dataset):
             L = (L - torch.tensor(self.global_parameter_min)) / (torch.tensor(self.global_parameter_max) - torch.tensor(self.global_parameter_min))
         
         if not getattr(self, "disable_subsampling", False) and self.max_num_points is not None and num_points > self.max_num_points:
-            rng = np.random.default_rng(self.epoch * 10000 + idx)
+            epoch = self.epoch.value if hasattr(self.epoch, "value") else self.epoch
+            rng = np.random.default_rng(epoch * 10000 + idx)
             total_points = coords.shape[0]
             perm = rng.choice(total_points, size=self.max_num_points, replace=False)
             perm.sort() 
@@ -135,4 +137,7 @@ class EllipseDataset(torch.utils.data.Dataset):
         )
     
     def set_epoch(self, epoch):
-        self.epoch = epoch
+        if hasattr(self.epoch, "value"):
+            self.epoch.value = int(epoch)
+        else:
+            self.epoch = int(epoch)

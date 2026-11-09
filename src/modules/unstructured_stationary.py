@@ -535,11 +535,10 @@ class UnstructuredTransformerStationary(UnstructuredTransformerAdapter):
         return data_prediction, data_output
 
     def on_train_epoch_start(self):
-        if hasattr(self.trainer.datamodule.train_dataset, "sim_indexes"):
-            random.shuffle(self.trainer.datamodule.train_dataset.sim_indexes)
         super().on_train_epoch_start()
-
-        self.trainer.datamodule.train_dataset.set_epoch(self.current_epoch)
+        train_ds = getattr(self.trainer.datamodule, "train_dataset", None)
+        if hasattr(train_ds, "set_epoch"):
+            train_ds.set_epoch(self.current_epoch)
 
     def configure_optimizers(self):
 

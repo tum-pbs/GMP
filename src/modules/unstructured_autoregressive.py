@@ -172,6 +172,12 @@ class UnstructuredTransformerAutoregressive(UnstructuredTransformerAdapter):
 
         return data_prediction, data_output
 
+    def on_train_epoch_start(self):
+        super().on_train_epoch_start()
+        train_ds = getattr(self.trainer.datamodule, "train_dataset", None)
+        if hasattr(train_ds, "set_epoch"):
+            train_ds.set_epoch(self.current_epoch)
+
     def configure_optimizers(self):
 
         # initialize optimizers with self.parameters()

@@ -1,6 +1,7 @@
 from ..dataclasses import DataSample, LoadingMetadata, PhysicalMetadata, asdict_shallow
 
 import h5py
+import multiprocessing as mp
 import os
 import torch
 import numpy as np
@@ -54,7 +55,7 @@ class CrashSteady(torch.utils.data.Dataset):
         self.time_steps = time_steps
         self.target_step = target_step
         self.max_num_points = max_num_points
-        self.epoch = 0
+        self.epoch = mp.Value("i", 0, lock=False)
 
         self.data_path = []
         for idx in self.sim_indexes:
@@ -93,7 +94,8 @@ class CrashSteady(torch.utils.data.Dataset):
                 global_params[i] /= self.global_parameter_max[i] - self.global_parameter_min[i]
 
         if not getattr(self, "disable_subsampling", False) and self.max_num_points is not None and num_points > self.max_num_points:
-            rng = np.random.default_rng(self.epoch * 10000 + idx)
+            epoch = self.epoch.value if hasattr(self.epoch, "value") else self.epoch
+            rng = np.random.default_rng(epoch * 10000 + idx)
             total_points = coords.shape[0]
             perm = rng.choice(total_points, size=self.max_num_points, replace=False)
             perm.sort()
@@ -139,6 +141,9 @@ class CrashSteady(torch.utils.data.Dataset):
         )
 
     def set_epoch(self, epoch):
-        self.epoch = epoch
+        if hasattr(self.epoch, "value"):
+            self.epoch.value = int(epoch)
+        else:
+            self.epoch = int(epoch)
 
 

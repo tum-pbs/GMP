@@ -1,6 +1,7 @@
 from ..dataclasses import DataSample, LoadingMetadata, PhysicalMetadata, asdict_shallow
 
 import h5py
+import multiprocessing as mp
 import os
 import torch
 import numpy as np
@@ -47,7 +48,7 @@ class KSDataset(torch.utils.data.Dataset):
         self.time_steps = time_steps
         self.start = start
         self.max_num_points = max_num_points
-        self.epoch = 0
+        self.epoch = mp.Value("i", 0, lock=False)
 
         f = h5py.File(file_path, "r")
         f = f["sims"]
@@ -126,4 +127,7 @@ class KSDataset(torch.utils.data.Dataset):
         )
     
     def set_epoch(self, epoch):
-        self.epoch = epoch
+        if hasattr(self.epoch, "value"):
+            self.epoch.value = int(epoch)
+        else:
+            self.epoch = int(epoch)

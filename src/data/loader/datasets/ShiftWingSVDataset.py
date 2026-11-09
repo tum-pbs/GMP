@@ -1,3 +1,4 @@
+import multiprocessing as mp
 import os
 from typing import List, Optional
 
@@ -128,7 +129,7 @@ class ShiftWingSVDataset(torch.utils.data.Dataset):
 
         self.min_domain = torch.tensor(min_domain, dtype=torch.float32)
         self.max_domain = torch.tensor(max_domain, dtype=torch.float32)
-        self.epoch = 0
+        self.epoch = mp.Value("i", 0, lock=False)
 
         # collect file paths (parallel lists)
         potential_vol = [volume_file_path.format(i=f"{idx:06d}") for idx in self.sim_indexes]
@@ -319,7 +320,8 @@ class ShiftWingSVDataset(torch.utils.data.Dataset):
             perm_v = np.arange(Nv)
             perm_s = np.arange(Ns)
         else:
-            rng = np.random.default_rng(self.epoch * 10000 + idx)
+            epoch = self.epoch.value if hasattr(self.epoch, "value") else self.epoch
+            rng = np.random.default_rng(epoch * 10000 + idx)
             sz_v = min(self.max_num_volume_points, Nv)
             perm_v = rng.choice(Nv, size=sz_v, replace=False)
             perm_v = np.sort(perm_v)
@@ -387,4 +389,7 @@ class ShiftWingSVDataset(torch.utils.data.Dataset):
         )
 
     def set_epoch(self, epoch: int):
-        self.epoch = int(epoch)
+        if hasattr(self.epoch, "value"):
+            self.epoch.value = int(epoch)
+        else:
+            self.epoch = int(epoch)

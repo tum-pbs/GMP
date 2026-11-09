@@ -205,3 +205,10 @@ class MultiUPDEDataset(torch.utils.data.Dataset):
         """Method to close all datasets and release resources."""
         for dataset in self.datasets:
             dataset.close()
+
+    def set_epoch(self, epoch: int):
+        """Method to set epoch on all sub-datasets."""
+        for dataset in self.datasets:
+            if hasattr(dataset, "set_epoch"):
+                dataset.set_epoch(epoch)
+
