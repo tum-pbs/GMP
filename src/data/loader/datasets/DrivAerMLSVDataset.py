@@ -160,7 +160,12 @@ class DrivAerMLSVDataset(torch.utils.data.Dataset):
         # load global parameters and normalize
         df = pd.read_csv(global_parameter_path)
         df.columns = df.columns.str.strip()
-        gp = torch.tensor(df[global_parameter_names].values, dtype=torch.float32)
+        # select rows by run number (aligned with self.sim_indexes), not by CSV position
+        df = df.set_index("Run")
+        missing = [s for s in self.sim_indexes if s not in df.index]
+        if missing:
+            raise ValueError(f"No global parameters in {global_parameter_path} for runs {missing}")
+        gp = torch.tensor(df.loc[self.sim_indexes, global_parameter_names].values, dtype=torch.float32)
         self.global_parameters = (gp - torch.tensor(global_parameter_min)) / (torch.tensor(global_parameter_max) - torch.tensor(global_parameter_min))
         self.global_parameters = self.global_parameters.to(torch.float32)
 
@@ -183,7 +188,7 @@ class DrivAerMLSVDataset(torch.utils.data.Dataset):
         surf_path = self.file_paths_surf[idx]
         sim_index = self.sim_indexes[idx]
 
-        # choose global params by positional idx (file lists are parallel)
+        # global_parameters rows are aligned with self.sim_indexes / file lists
         global_params = self.global_parameters[idx]
 
         # optional simple cache
